@@ -3,14 +3,26 @@
 
 // !!! corectie bug operator de egalitate BigPoly
 
-HE_Signal::HE_Signal(int poly_modulus, int plain_modulus, int bitdecomp)
+HE_Signal::HE_Signal(const char* poly_modulus, int plain_modulus,
+	int decomposition_bit_count, const char *coeff_modulus)
 {
-	parms.poly_modulus() = "1x^2048 + 1";
+	/*parms.poly_modulus() = "1x^2048 + 1";
 	parms.coeff_modulus() = ChooserEvaluator::default_parameter_options().at(2048);
 	parms.plain_modulus() = 1 << 8;
-	parms.decomposition_bit_count() = 64;
+	parms.decomposition_bit_count() = 32;*/
+	/*parms.poly_modulus() = "1x^4096 + 1";
+	parms.coeff_modulus() = "3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD793F83";
+	parms.plain_modulus() = 1073153;
 	parms.noise_standard_deviation() = ChooserEvaluator::default_noise_standard_deviation();
-	parms.noise_max_deviation() = ChooserEvaluator::default_noise_max_deviation();
+	parms.noise_max_deviation() = ChooserEvaluator::default_noise_max_deviation();*/
+
+	parms.poly_modulus() = poly_modulus;
+	if (strlen(coeff_modulus) == 0)
+		parms.coeff_modulus() = ChooserEvaluator::default_parameter_options().at(2048);
+	else
+		parms.coeff_modulus() = coeff_modulus;
+	parms.plain_modulus() = plain_modulus;
+	parms.decomposition_bit_count() = decomposition_bit_count;
 
 	KeyGenerator generator(parms);
 	generator.generate();
@@ -32,7 +44,7 @@ HE_Signal::HE_Signal(int poly_modulus, int plain_modulus, int bitdecomp)
 	BigPoly decrypted1 = decryptor.decrypt(encrypted1);
 	cout << encoder.decode_int32(decrypted1);*/
 
-	ofstream par_file("par.out");
+	/*ofstream par_file("par.out");
 	parms.save(par_file);
 	par_file.flush();
 	// cout << parms.coeff_modulus().significant_bit_count() << " bits per coefficient" << endl;
@@ -48,11 +60,11 @@ HE_Signal::HE_Signal(int poly_modulus, int plain_modulus, int bitdecomp)
 
 	ofstream ek_file("ek.out");
 	evaluation_keys->save(ek_file);
-	ek_file.flush();
+	ek_file.flush();*/
 	// cout << "eval.count = " << evaluation_keys.count() << endl;
 }
 
-HE_Signal::HE_Signal()
+/*HE_Signal::HE_Signal()
 {
 	ifstream in;
 	in.open("par.out");
@@ -74,7 +86,7 @@ HE_Signal::HE_Signal()
 	(*evaluation_keys).load(in);
 	cout << "eval.count = " << (*evaluation_keys).count() << endl;
 	in.close();
-}
+}*/
 
 HE_Signal::~HE_Signal()
 {

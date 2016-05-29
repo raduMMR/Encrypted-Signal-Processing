@@ -8,17 +8,18 @@ using namespace seal;
 
 class HE_Signal
 {
+protected:
 	EncryptionParameters parms;
 	BigPoly *secret_key;
 	BigPoly *public_key;
 	EvaluationKeys *evaluation_keys;
 
 public:
-	HE_Signal::HE_Signal();
 
-	HE_Signal(int poly_modulus, int plain_modulus, int bitdecomp);
+	HE_Signal(const char* poly_modulus = "1x^2048 + 1", int plain_modulus = 1073153,
+		int decomposition_bit_count = 32, const char *coeff_modulus = "3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD793F83");
 
-	~HE_Signal();
+	virtual ~HE_Signal();
 
 	void encrypt_signal(vector<int> &plain_samples, vector<BigPoly> &encrypted_samples)const;
 
